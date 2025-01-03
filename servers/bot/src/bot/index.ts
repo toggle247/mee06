@@ -28,8 +28,6 @@ client.once(Events.ClientReady, async (client) => {
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
-  console.log("Interaction");
-
   if (interaction.isStringSelectMenu()) {
     if (interaction.customId === Interactions.TICKET_CATEGORY) {
       const app = new ButtonBuilder()
