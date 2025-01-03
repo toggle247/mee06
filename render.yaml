@@ -13,8 +13,6 @@ services:
       - fromGroup: mee06/servers/bot
       - key: APP_URL
         value: https://support.blockmend.xyz
-    domains:
-      - v1.api.blockmend.xyz
 
   - type: web
     name: www
@@ -29,4 +27,3 @@ services:
       - fromGroup: mee06/servers/www
     domains:
       - support.blockmend.xyz
-
