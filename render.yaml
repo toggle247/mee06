@@ -1,6 +1,6 @@
 services:
   - type: worker
-    name: bot
+    name: mee06/bot
     runtime: node
     plan: starter
     buildCommand: cd servers/bot && bun install && bun run build
@@ -15,7 +15,7 @@ services:
         value: https://support.blockmend.xyz
 
   - type: web
-    name: www
+    name: meeo6/www
     runtime: static
     buildCommand: cd web/www && yarn install && yarn build
     staticPublishPath: web/www/dist
