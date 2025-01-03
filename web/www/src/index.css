@@ -1,0 +1,8 @@
+pre {
+  display: inline;
+}
+
+
+*, *:hover, *:focus {
+    outline: none;
+}

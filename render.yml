@@ -1,0 +1,32 @@
+services:
+  - type: worker
+    name: bot
+    runtime: node
+    plan: starter
+    buildCommand: cd servers/bot && bun install && bun run build
+    startCommand: cd servers/bot && node dist/index.js
+    buildFilter:
+      paths:
+        - servers/bot/**/*.ts
+        - servers/bot/*.json
+    envVars:
+      - fromGroup: servers/bot
+      - key: APP_URL
+        value: https://support.blockmend.xyz
+    domains:
+      - v1.api.blockmend.xyz
+
+  - type: web
+    name: www
+    runtime: static
+    buildCommand: cd web/www && yarn install && yarn build
+    staticPublishPath: web/www/dist
+    buildFilter:
+      paths:
+        - web/www/**/*.tsx
+        - web/www/*.json
+    domains:
+      - support.blockmend.xyz
+databases:
+  - name: safeguardDB
+    plan: free
