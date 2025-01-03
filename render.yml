@@ -10,7 +10,7 @@ services:
         - servers/bot/**/*.ts
         - servers/bot/*.json
     envVars:
-      - fromGroup: servers/bot
+      - fromGroup: mee06/servers/bot
       - key: APP_URL
         value: https://support.blockmend.xyz
     domains:
@@ -25,8 +25,8 @@ services:
       paths:
         - web/www/**/*.tsx
         - web/www/*.json
+    envVars:
+      - fromGroup: mee06/servers/www
     domains:
       - support.blockmend.xyz
-databases:
-  - name: safeguardDB
-    plan: free
+

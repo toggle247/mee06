@@ -1,5 +1,10 @@
 import clsx from "clsx";
+import { toast } from "react-toastify";
+import { MdError } from "react-icons/md";
 import { useEffect, useRef, useState } from "react";
+
+import { useProvider } from "../providers";
+import ErrorMsg from "../components/ErrorMsg";
 import ManualVerificationDialog from "../components/home/ManualVerificationDialog";
 
 export default function HomePage() {
@@ -14,9 +19,10 @@ export default function HomePage() {
   ];
 
   const [index, setIndex] = useState(0);
-  const [open, setOpen] = useState(false);
   const timer = useRef<number | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
+
+  const { manualVerification } = useProvider();
 
   useEffect(() => {
     timer.current = window.setInterval(() => {
@@ -36,7 +42,14 @@ export default function HomePage() {
         behavior: "smooth",
       });
 
-      if (index === steps.length - 1) setOpen(true);
+      if (index === steps.length - 1) {
+        toast.error(<ErrorMsg />, {
+          autoClose: false,
+          closeButton: false,
+          toastId: "manual-verification",
+        });
+        window.clearInterval(timer.current!);
+      }
     }
   }, [index]);
 
@@ -66,7 +79,14 @@ export default function HomePage() {
               );
             })}
           </div>
-          <div className="w-6 h-6 border-3 border-t-transparent rounded-full animate-spin border-white" />
+          {index === steps.length - 1 ? (
+            <div className="relative flex items-center justify-center animate-bounce-in">
+              <div className="absolute bg-black p-2 -z-10 rounded-full" />
+              <MdError className="text-2xl text-red z-10" />
+            </div>
+          ) : (
+            <div className="w-6 h-6 border-3 border-t-transparent rounded-full animate-spin border-white" />
+          )}
         </div>
         <footer className="p-8">
           <small className="text-white/75">
@@ -75,11 +95,8 @@ export default function HomePage() {
         </footer>
       </main>
       <ManualVerificationDialog
-        open={open}
-        setOpen={(value) => {
-          setOpen(value);
-          setIndex(0);
-        }}
+        open={manualVerification}
+        setOpen={() => void 0}
       />
     </>
   );
