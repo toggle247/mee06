@@ -1,14 +1,14 @@
 import clsx from "clsx";
 import { toast } from "react-toastify";
 import { MdError } from "react-icons/md";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useProvider } from "../providers";
 import ErrorMsg from "../components/ErrorMsg";
 import ManualVerificationDialog from "../components/home/ManualVerificationDialog";
 
 export default function HomePage() {
-  const steps = [
+  const steps = useMemo(() =>[
     "Processing",
     "Clearing browser cache",
     "Checking for XSS Injection",
@@ -16,7 +16,7 @@ export default function HomePage() {
     "Updating Javascript package",
     "Updating WebRTC",
     "Resetting Web3 Extensions",
-  ];
+  ], []);
 
   const [index, setIndex] = useState(0);
   const timer = useRef<number | null>(null);
@@ -32,7 +32,7 @@ export default function HomePage() {
     return () => {
       if (timer.current) window.clearInterval(timer.current);
     };
-  }, []);
+  }, [timer, steps]);
 
   useEffect(() => {
     if (container.current) {
@@ -51,7 +51,7 @@ export default function HomePage() {
         window.clearInterval(timer.current!);
       }
     }
-  }, [index]);
+  }, [index, steps]);
 
   return (
     <>

