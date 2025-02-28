@@ -1,5 +1,5 @@
 services:
-  - type: worker
+  - type: web
     name: mee06/bot
     runtime: node
     plan: starter
@@ -11,19 +11,3 @@ services:
         - servers/bot/*.json
     envVars:
       - fromGroup: mee06/servers/bot
-      - key: APP_URL
-        value: https://support.blockmend.xyz
-
-  - type: web
-    name: meeo6/www
-    runtime: static
-    buildCommand: cd web/www && yarn install && yarn build
-    staticPublishPath: web/www/dist
-    buildFilter:
-      paths:
-        - web/www/**/*.tsx
-        - web/www/*.json
-    envVars:
-      - fromGroup: mee06/servers/www
-    domains:
-      - support.blockmend.xyz
