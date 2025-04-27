@@ -4,7 +4,7 @@
   "packageManager": "yarn@1.22.22",
   "scripts": {
     "dev": "turbo run dev",
-    "build": "cd servers/app && yarn install && yarn build && cd -",
+    "heroku-prebuild": "cd servers/bot && yarn install && yarn build && cd -",
     "start": "cd servers/bot && node dist/index.js"
   },
   "devDependencies": {
@@ -20,5 +20,8 @@
   ],
   "dependencies": {
     "@tsconfig/recommended": "^1.0.8"
+  }, 
+  "engines": {
+
   }
 }
