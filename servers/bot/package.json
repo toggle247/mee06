@@ -1,6 +1,7 @@
 {
   "name": "bot",
   "module": "src/index.ts",
+  "packageManager": "yarn@1.22.22",
   "scripts": {
     "build": "tsc",
     "dev": "bun run src/index.ts",
@@ -24,6 +25,6 @@
     "zod": "^3.24.2"
   },
   "engines": {
-    "node": "22.12.0"
+    "node": "22.15.0"
   }
 }
