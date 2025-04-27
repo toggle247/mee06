@@ -3,7 +3,7 @@
   "module": "src/index.ts",
   "packageManager": "yarn@1.22.22",
   "scripts": {
-    "build": "yarn tsc",
+    "build": "yarn install && npx tsc",
     "dev": "bun run src/index.ts",
     "start": "node dist/index.js",
     "set:config": "heroku config:set $(cat .env | xargs) -a mee06"
