@@ -21,7 +21,7 @@ WORKDIR /usr/src/app
 
 # Install node modules
 COPY --from=codegen /usr/src/app/out/json .
-RUN bun install --frozen-lockfile
+RUN bun install
 
 # Build application
 COPY --from=codegen /usr/src/app/out/full . 
