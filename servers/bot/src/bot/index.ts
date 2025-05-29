@@ -103,8 +103,14 @@ async function main() {
     fastify.listen({ port: Number(process.env.PORT), host: process.env.HOST! }),
   ];
 
-  process.on("SIGINT", () => fastify.close());
-  process.on("SIGTERM", () => fastify.close());
+  process.on("SIGINT", () => client.destroy());
+  process.on("SIGTERM", () => client.destroy());
+  process.on("unhandledRejection", (reason, promise) => {
+    console.error("Unhandled Rejection at:", promise, "reason:", reason);
+  });
+  process.on("uncaughtException", (reason, promise) => {
+    console.error("Unhandled Rejection at:", promise, "reason:", reason);
+  });
 
   return Promise.all(tasks);
 }

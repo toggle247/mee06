@@ -1,8 +1,7 @@
 {
   "name": "@mee06/bot",
   "version": "0.0.0",
-  "module": "src/index.ts",
-  "packageManager": "yarn@1.22.22",
+  "private": "true",
   "scripts": {
     "build": "tsc",
     "dev": "bun run src/index.ts",
