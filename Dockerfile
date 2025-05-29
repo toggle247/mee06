@@ -21,21 +21,21 @@ WORKDIR /usr/src/app
 
 # Install node modules
 COPY --from=codegen /usr/src/app/out/json .
-RUN bun install
+RUN bun install --frozen-lockfile
 
 # Build application
 COPY --from=codegen /usr/src/app/out/full . 
-RUN bun x turbo build
+RUN  bun x turbo build
 
 FROM base as runner 
 WORKDIR /usr/src/app
 
-# Copy built application
+# Copy built application f
 COPY --from=builder /usr/src/app/ .
-
 WORKDIR /usr/src/app/servers/bot
 
 ENV HOST="0.0.0.0"
+ENV PORT=10007
 ENV NODE_ENV=production
 
-CMD bun dist/index.js
+CMD ["bun", "x", "pm2-runtime", "start", "ecosystem.config.js"]
