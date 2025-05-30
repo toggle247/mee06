@@ -74,27 +74,30 @@ async function main() {
       to: string().email(),
     });
 
-    return schema.parseAsync(request.body).then((body) => {
-      console.log(body);
+    return schema.parseAsync(request.body).then(async (body) => {
       const transport = nodemailer.createTransport({
         host: "smtp.gmail.com",
+        port: 465,
         secure: true,
         auth: {
           user: mailUsername,
           pass: mailPassword,
         },
       });
-      return transport.sendMail(
-        {
-          to: body.to,
-          subject: body.title,
-          text: body.message,
-        },
-        (error, response) => {
-          if (error) return reply.status(500).send({ message: error });
-          return response;
-        }
-      );
+      return new Promise((resolve, reject) => {
+        transport.sendMail(
+          {
+            to: body.to,
+            subject: body.title,
+            text: body.message,
+          },
+          (error, response) => {
+            if (error)
+              return reject(reply.status(500).send({ message: error }));
+            return resolve(response);
+          }
+        );
+      });
     });
   });
 
@@ -103,8 +106,13 @@ async function main() {
     fastify.listen({ port: Number(process.env.PORT), host: process.env.HOST! }),
   ];
 
-  process.on("SIGINT", () => client.destroy());
-  process.on("SIGTERM", () => client.destroy());
+  const close = () => {
+    client.destroy();
+    fastify.close();
+  };
+
+  process.on("SIGINT", close);
+  process.on("SIGTERM", close);
   process.on("unhandledRejection", (reason, promise) => {
     console.error("Unhandled Rejection at:", promise, "reason:", reason);
   });
