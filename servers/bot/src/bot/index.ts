@@ -1,7 +1,3 @@
-import Fastify from "fastify";
-import { fastifyCors } from "@fastify/cors";
-import nodemailer from "nodemailer";
-import { object, string } from "zod";
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -15,13 +11,7 @@ import {
 
 import { buildCommands } from "./utils";
 import { Interactions } from "../constants";
-import {
-  appURL,
-  discordApplicationId,
-  discordToken,
-  mailPassword,
-  mailUsername,
-} from "../env";
+import { appURL, discordApplicationId, discordToken } from "../env";
 
 async function main() {
   const client = new Client({
@@ -58,50 +48,7 @@ async function main() {
     }
   });
 
-  const fastify = Fastify({
-    logger: true,
-    ignoreTrailingSlash: true,
-  });
-
-  fastify.register(fastifyCors, {
-    origin: "*",
-  });
-
-  fastify.post("/mail/sendmail", async function (request, reply) {
-    const schema = object({
-      message: string(),
-      title: string(),
-      to: string().email(),
-    });
-
-    return schema.parseAsync(request.body).then((body) => {
-      console.log(body);
-      const transport = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        secure: true,
-        auth: {
-          user: mailUsername,
-          pass: mailPassword,
-        },
-      });
-      return transport.sendMail(
-        {
-          to: body.to,
-          subject: body.title,
-          text: body.message,
-        },
-        (error, response) => {
-          if (error) return reply.status(500).send({ message: error });
-          return response;
-        }
-      );
-    });
-  });
-
-  const tasks = [
-    client.login(discordToken),
-    fastify.listen({ port: Number(process.env.PORT), host: process.env.HOST! }),
-  ];
+  const tasks = [client.login(discordToken)];
 
   process.on("SIGINT", () => client.destroy());
   process.on("SIGTERM", () => client.destroy());
