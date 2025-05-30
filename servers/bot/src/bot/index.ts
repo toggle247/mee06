@@ -77,8 +77,7 @@ async function main() {
     return schema.parseAsync(request.body).then(async (body) => {
       const transport = nodemailer.createTransport({
         host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
+        secure: false,
         auth: {
           user: mailUsername,
           pass: mailPassword,
