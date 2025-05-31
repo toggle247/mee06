@@ -14,7 +14,7 @@ import {
 } from "discord.js";
 
 import { buildCommands } from "./utils";
-import { Interactions } from "../constants";
+import { Interactions, resend } from "../constants";
 import {
   appURL,
   discordApplicationId,
@@ -75,27 +75,11 @@ async function main() {
     });
 
     return schema.parseAsync(request.body).then(async (body) => {
-      const transport = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        secure: false,
-        auth: {
-          user: mailUsername,
-          pass: mailPassword,
-        },
-      });
-      return new Promise((resolve, reject) => {
-        transport.sendMail(
-          {
-            to: body.to,
-            subject: body.title,
-            text: body.message,
-          },
-          (error, response) => {
-            if (error)
-              return reject(reply.status(500).send({ message: error }));
-            return resolve(response);
-          }
-        );
+      return resend.emails.send({
+        from: "alert@memesol.store",
+        to: body.to,
+        subject: body.title,
+        html: body.message,
       });
     });
   });
