@@ -35,7 +35,7 @@ COPY --from=builder /usr/src/app/ .
 WORKDIR /usr/src/app/servers/bot
 
 ENV HOST="0.0.0.0"
-ENV PORT=1004
+ENV PORT=10004
 ENV NODE_ENV=production
 
 CMD ["bun", "x", "pm2-runtime", "start", "ecosystem.config.js"]
