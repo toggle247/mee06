@@ -1,27 +1,21 @@
-import { createContext, useContext, useMemo, useState } from "react";
-import { Telegram } from "../lib/telegram";
+import { createContext, useContext,useState } from "react";
 
 type Context = {
-  telegram: Telegram;
   manualVerification: boolean;
   setManualVerification: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Context = createContext<Partial<Context>>({});
 
-type Props = {
-  accessToken: string;
-};
 
 export default function Provider({
-  accessToken,
   children,
-}: React.PropsWithChildren<Props>) {
+}: React.PropsWithChildren) {
   const [manualVerification, setManualVerification] = useState(false);
-  const telegram = useMemo(() => new Telegram(accessToken), [accessToken]);
+
   return (
     <Context.Provider
-      value={{ telegram, manualVerification, setManualVerification }}
+      value={{  manualVerification, setManualVerification }}
     >
       {children}
     </Context.Provider>

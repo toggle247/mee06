@@ -13,7 +13,7 @@ import Provider from "./providers";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Provider accessToken={import.meta.env.VITE_APP_TELEGRAM_ACCESS_TOKEN}>
+    <Provider>
       <HomePage />
       <ToastContainer />
     </Provider>
