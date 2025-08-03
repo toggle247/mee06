@@ -1,6 +1,7 @@
 node_modules
 .turbo
-dist
+dist 
 .env
 .env.prod
 firebase-debug.log
+web
