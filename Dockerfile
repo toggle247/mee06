@@ -11,16 +11,9 @@ WORKDIR /usr/src/app
 
 # Copy source code
 COPY . .
-
 RUN bun install turbo --global
-
-FROM base as builder
-WORKDIR /usr/src/app
-
-# Install node modules
 RUN bun install
-# Build application
-RUN  bun x turbo build
+RUN bun x turbo build
 
 FROM base as runner 
 WORKDIR /usr/src/app
