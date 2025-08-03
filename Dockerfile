@@ -9,11 +9,10 @@ RUN apt-get update -qq && \
 FROM base AS builder
 WORKDIR /usr/src/app
 
-# Copy source codex
 COPY . .
-RUN bun install turbo --global
 RUN bun install
-RUN bun x turbo build
+RUN cd web/www && bun install && bun run build && cd -
+RUN cd servers/bot && bun install && bun run build && cd -
 
 FROM base AS runner
 WORKDIR /usr/src/app
