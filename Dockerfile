@@ -11,7 +11,7 @@ WORKDIR /usr/src/app
 
 COPY . .
 RUN bun install
-RUN cd web/www && bun install && bun run build && cd -
+RUN cd web/www && bun install && bun run build --verbose && cd -
 RUN cd servers/bot && bun install && bun run build && cd -
 
 FROM base AS runner
