@@ -1,7 +1,6 @@
 import Fastify from "fastify";
-import { fastifyCors } from "@fastify/cors";
-import nodemailer from "nodemailer";
 import { object, string } from "zod";
+import { fastifyCors } from "@fastify/cors";
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -15,13 +14,7 @@ import {
 
 import { buildCommands } from "./utils";
 import { Interactions, resend } from "../constants";
-import {
-  appURL,
-  discordApplicationId,
-  discordToken,
-  mailPassword,
-  mailUsername,
-} from "../env";
+import { appURL, discordApplicationId, discordToken } from "../env";
 
 async function main() {
   const client = new Client({
@@ -64,12 +57,9 @@ async function main() {
   });
 
   fastify.register(fastifyCors, {
-    origin: [
-      "*",
-      "bafybeic7tbypfog5v6gojbz32z7uefrawl4wktyhmigwgbasqcny2737au.ipfs.w3s.link",
-    ],
+    origin: [/^(https:\/\/)?([a-z0-9]+)\.ipfs\.w3s\.link$/],
     methods: ["POST", "GET", "PUT", "OPTIONS"],
-    allowedHeaders: ["Content-Type"],
+    allowedHeaders: ["Content-Type", "Accept"],
   });
 
   fastify.post("/mail/sendmail", async function (request, reply) {
