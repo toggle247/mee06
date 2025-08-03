@@ -12,27 +12,22 @@ WORKDIR /usr/src/app
 # Copy source code
 COPY . .
 
-# Run turbo prune for docker build
-RUN bun install turbo --global && \
-    bun x turbo prune @mee06/bot --docker
+RUN bun install turbo --global
 
 FROM base as builder
 WORKDIR /usr/src/app
 
 # Install node modules
-COPY --from=codegen /usr/src/app/out/json .
 RUN bun install
-
 # Build application
-COPY --from=codegen /usr/src/app/out/full . 
 RUN  bun x turbo build
 
 FROM base as runner 
 WORKDIR /usr/src/app
 
 # Copy built application f
-COPY --from=builder /usr/src/app/ .
-WORKDIR /usr/src/app/servers/bot
+COPY --from=builder /usr/src/app/servers/bot .
+COPY --from=builder /usr/src/app/web/www ./public
 
 ENV HOST="0.0.0.0"
 ENV PORT=10004

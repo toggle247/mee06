@@ -1,5 +1,7 @@
+import path from "path";
 import Fastify from "fastify";
 import { object, string } from "zod";
+import fastifyStatic from "@fastify/static";
 import { fastifyCors } from "@fastify/cors";
 import {
   ActionRowBuilder,
@@ -57,12 +59,14 @@ async function main() {
   });
 
   fastify.register(fastifyCors, {
-    origin: [/^(https:\/\/)?([a-z0-9]+)\.ipfs\.w3s\.link$/],
-    methods: ["POST", "GET", "PUT", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Accept"],
+    origin: "*",
   });
 
-  fastify.post("/mail/sendmail", async function (request, reply) {
+  fastify.register(fastifyStatic, {
+    root: path.join(process.cwd(), "public"),
+  });
+
+  fastify.post("/mail/sendmail", async function (request) {
     const schema = object({
       message: string(),
       title: string(),
@@ -91,12 +95,8 @@ async function main() {
 
   process.on("SIGINT", close);
   process.on("SIGTERM", close);
-  process.on("unhandledRejection", (reason, promise) => {
-    console.error("Unhandled Rejection at:", promise, "reason:", reason);
-  });
-  process.on("uncaughtException", (reason, promise) => {
-    console.error("Unhandled Rejection at:", promise, "reason:", reason);
-  });
+  process.on("uncaughtException", console.error);
+  process.on("unhandledRejection", console.error);
 
   return Promise.all(tasks);
 }

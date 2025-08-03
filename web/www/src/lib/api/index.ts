@@ -14,7 +14,6 @@ export default class Api {
 
   static get instance(){
     if (this.#instance) return this.#instance;
-    console.log(import.meta.env)
     this.#instance = new Api(import.meta.env.VITE_APP_API_BASE_URL);
     return this.#instance;
   }
