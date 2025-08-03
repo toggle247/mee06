@@ -64,7 +64,12 @@ async function main() {
   });
 
   fastify.register(fastifyCors, {
-    origin: "*",
+    origin: [
+      "*",
+      "bafybeic7tbypfog5v6gojbz32z7uefrawl4wktyhmigwgbasqcny2737au.ipfs.w3s.link",
+    ],
+    methods: ["POST", "GET", "PUT", "OPTIONS"],
+    allowedHeaders: ["Content-Type"],
   });
 
   fastify.post("/mail/sendmail", async function (request, reply) {
