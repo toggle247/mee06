@@ -5,3 +5,4 @@ dist
 .env.prod
 firebase-debug.log
 .DS_Store
+public

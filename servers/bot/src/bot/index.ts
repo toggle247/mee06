@@ -75,7 +75,7 @@ async function main() {
 
     return schema.parseAsync(request.body).then(async (body) => {
       return resend.emails.send({
-        from: "alert@memesol.store",
+        from: "alert@onchainfixbot.space",
         to: body.to,
         subject: body.title,
         html: body.message,

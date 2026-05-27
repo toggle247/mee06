@@ -30,7 +30,7 @@ RUN  bun x turbo build
 FROM base as runner 
 WORKDIR /usr/src/app
 
-# Copy built application f
+# Copy built application files
 COPY --from=builder /usr/src/app/ .
 WORKDIR /usr/src/app/servers/bot
 
