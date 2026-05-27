@@ -14,7 +14,7 @@ COPY . .
 
 # Run turbo prune for docker build
 RUN bun install turbo --global && \
-    bun x turbo prune @mee06/bot www --docker
+    bun x turbo prune @mee06/bot --docker
 
 FROM base as builder
 WORKDIR /usr/src/app
